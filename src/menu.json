@@ -1,0 +1,33 @@
+[{
+    "id": 0,
+    "name": "Spaghetti & Meatballs",
+    "image": "testImageURL",
+    "description": "testDescription",
+    "price": 3.50
+},
+{
+    "id": 1,
+    "name": "Cheese Pizza",
+    "price": 3.99
+},
+{
+    "id": 2,
+    "name": "Fried Chicken",
+    "price": 3.75
+},
+{
+    "id": 3,
+    "name": "French Toast",
+    "price": 3.15
+},
+{
+    "id": 4,
+    "name": "Cinnamon Roll",
+    "price": 2.15
+},
+{
+    "id": 5,
+    "name": "Double Decker Taco",
+    "price": 1.00
+}
+]
