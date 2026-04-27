@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import './App.css'
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
+
 
 //main page components
 import Home from './components/Home'
 import Menu from './components/Menu'  
 import Cart from './components/Cart'
+import Admin from './components/Admin'
 
 
 function App() {
-  const [isViewingHome, setIsViewingHome] = useState(true)
-  const [isViewingMenu, setIsViewingMenu] = useState(false)
-  const [isViewingCart, setIsViewingCart] = useState(false)
 
   const [itemsInCart, setItemsInCart] = useState([])
 
@@ -60,31 +60,42 @@ function App() {
 
   return (
     <>
-      <header>
-        <nav>
-          <ul>
-            <li onClick={() => viewHome()}>Home</li>
-            <li onClick={() => viewMenu()}>Menu</li>
-            <li onClick={() => viewCart()}>Cart</li>
-          </ul>
-        </nav>
-      </header>
-      <section>
-        {isViewingHome && <Home/>}
-        {isViewingMenu && 
-          <Menu
-            addToCart={(menuItem) => addItemToCart(menuItem)}
-          />
-        }
-        {isViewingCart && 
-          <Cart
-            cartContents={[...itemsInCart]}
-            addToCart={(menuItem) => addItemToCart(menuItem)}
-            removeFromCart={(menuItem) => removeItemFromCart(menuItem)}
-          />
-        }
-      </section>
+      <BrowserRouter>
+        <header>
+          <nav>
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/menu">Menu</Link></li>
+              <li><Link to="/cart">Cart</Link><span> {itemsInCart.reduce((a,b) => a + b.quantity, 0) || ""}</span></li>
+            </ul>
+          </nav>
+        </header>
+        <Routes>
+            {/* Customer Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/menu" element={
+              <Menu 
+                addToCart={(menuItem) => addItemToCart(menuItem)}
+              />
+            }/>
+            <Route path="/cart" element={
+              <Cart 
+                cartContents={itemsInCart}
+                addToCart={(menuItem) => addItemToCart(menuItem)}
+                removeFromCart={(menuItem) => removeItemFromCart(menuItem)}
+              />
+            }/>
+            {/* Admin Routes */}
+            <Route path="/admin" element={
+              <Admin/>
+            }/>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
 export default App
+
+
+//what to do next:
+//feedback:  when you add an item to cart, you can't even tell it worked.
