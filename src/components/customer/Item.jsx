@@ -5,7 +5,7 @@ function Item(props) {
             className="menuItem"
         >
            <img src={img}></img> 
-           <p>{name}: ${price}</p>
+           <p>{name}: ${price.toFixed(2)}</p>
         </div>
     )
 }

@@ -1,0 +1,12 @@
+[
+    {
+        "id": 0,
+        "customerName": "Jane Doe",
+        "orderSummary": [{"itemName": "item 1", "quantity": "1"}, {"itemName": "item 2", "quantity": "1"}]
+    },
+    {
+        "id": 1,
+        "customerName": "John Doe",
+        "orderSummary": [{"itemName": "item 3", "quantity": "1"}, {"itemName": "item 4", "quantity": "1"}]
+    }
+]

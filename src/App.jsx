@@ -3,35 +3,18 @@ import './App.css'
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 
 
-//main page components
-import Home from './components/Home'
-import Menu from './components/Menu'  
-import Cart from './components/Cart'
-import Admin from './components/Admin'
-
+//customer components
+import Home from './components/customer/Home'
+import Menu from './components/customer/Menu'  
+import Cart from './components/customer/Cart'
+import Checkout from './components/customer/Checkout'
+//admin components
+import Admin from './components/admin/Admin'
+import CurrentOrders from './components/admin/Current_Orders'
+import EditMenu from './components/admin/EditMenu'
 
 function App() {
-
   const [itemsInCart, setItemsInCart] = useState([])
-
-
-  function viewHome() {
-    setIsViewingHome(true)
-    setIsViewingMenu(false)
-    setIsViewingCart(false)
-  }
-
-  function viewMenu() {
-    setIsViewingHome(false)
-    setIsViewingMenu(true)
-    setIsViewingCart(false)
-  }
-
-  function viewCart() {
-    setIsViewingHome(false)
-    setIsViewingMenu(false)
-    setIsViewingCart(true)
-  }
 
   function addItemToCart(newItem) {
     setItemsInCart(prev => {
@@ -85,10 +68,23 @@ function App() {
                 removeFromCart={(menuItem) => removeItemFromCart(menuItem)}
               />
             }/>
+            <Route path="/checkout" element={
+              <Checkout/>
+            }/>
+
             {/* Admin Routes */}
             <Route path="/admin" element={
               <Admin/>
             }/>
+            <Route
+              path="/currentOrders" element={
+                <CurrentOrders/>
+            }/>
+            <Route
+              path="/editMenu" element={
+                <EditMenu/>
+            }/>
+      
         </Routes>
       </BrowserRouter>
     </>
@@ -99,3 +95,5 @@ export default App
 
 //what to do next:
 //feedback:  when you add an item to cart, you can't even tell it worked.
+//cart component:  items need a button to add them to cart, rather than clicking anywhere on the element;  In other words, clean up the item component and how the menu shows them
+//admin convenience:  The admin should have header links to every page on the site; whereas customers should only see home, menu, cart
