@@ -40,6 +40,26 @@ function App() {
     })
   }
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
+  async function handleCheckout(cartItems) {
+    const res = await fetch(`${apiUrl}/create-checkout-session`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body:JSON.stringify({cartItems})
+    });
+    const data = await res.json(); 
+
+    //redirect user to stripe checkout, but only on success
+    if (res.ok) {
+      window.location.href = data.url || "/menu"  //menu fallback during testing; just in case data.url comes back undefined
+    } else {
+      console.error("Checkout failed:", data.error)
+    }
+  }
+
 
   return (
     <>
@@ -66,6 +86,7 @@ function App() {
                 cartContents={itemsInCart}
                 addToCart={(menuItem) => addItemToCart(menuItem)}
                 removeFromCart={(menuItem) => removeItemFromCart(menuItem)}
+                handleCheckout={() => handleCheckout(itemsInCart)}
               />
             }/>
             <Route path="/checkout" element={
