@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 
@@ -8,13 +8,23 @@ import Home from './components/customer/Home'
 import Menu from './components/customer/Menu'  
 import Cart from './components/customer/Cart'
 import Checkout from './components/customer/Checkout'
+import Success from './components/customer/Success'
 //admin components
 import Admin from './components/admin/Admin'
 import CurrentOrders from './components/admin/Current_Orders'
 import EditMenu from './components/admin/EditMenu'
 
 function App() {
-  const [itemsInCart, setItemsInCart] = useState([])
+  const [itemsInCart, setItemsInCart] = useState(() => {
+    const saved = localStorage.getItem("cart");
+    return saved ? JSON.parse(saved) : [];
+  });// Load data on startup; if there is existing data, load that, otherwise load the hard-coded seed file
+  const [userData, setUserData] = useState({})  //this will be the object where we store user name and phone, for the purpose of customer identification on pick-up of their order in store
+
+  // Whenever cart state changes, save to localStorage
+  useEffect(() => {
+      localStorage.setItem("cart", JSON.stringify(itemsInCart));
+  }, [itemsInCart]);
 
   function addItemToCart(newItem) {
     setItemsInCart(prev => {
@@ -40,15 +50,26 @@ function App() {
     })
   }
 
+ function getUserInformation(field, value) {  //fields are userName and userPhone as seen on the Cart.jsx inputs
+    setUserData(prev => ({
+        ...prev,
+        [field]: value
+    }))
+    console.log(field, value)
+  }
+
+
   const apiUrl = import.meta.env.VITE_API_URL;
-  
-  async function handleCheckout(cartItems) {
+
+  async function handleCheckout(cartItems, user) {
+    console.log(cartItems)
+    console.log(user)
     const res = await fetch(`${apiUrl}/create-checkout-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body:JSON.stringify({cartItems})
+      body:JSON.stringify({cartItems, user})
     });
     const data = await res.json(); 
 
@@ -86,11 +107,15 @@ function App() {
                 cartContents={itemsInCart}
                 addToCart={(menuItem) => addItemToCart(menuItem)}
                 removeFromCart={(menuItem) => removeItemFromCart(menuItem)}
-                handleCheckout={() => handleCheckout(itemsInCart)}
+                getUserInformation={(fieldName, value) => getUserInformation(fieldName, value)}
+                userInformation={userData}
+                handleCheckout={() => handleCheckout(itemsInCart, userData)}
               />
             }/>
-            <Route path="/checkout" element={
-              <Checkout/>
+            <Route path="/success" element={
+              <Success 
+                cartContents={itemsInCart}
+              />
             }/>
 
             {/* Admin Routes */}
@@ -115,6 +140,16 @@ export default App
 
 
 //what to do next:
-//feedback:  when you add an item to cart, you can't even tell it worked.
-//cart component:  items need a button to add them to cart, rather than clicking anywhere on the element;  In other words, clean up the item component and how the menu shows them
 //admin convenience:  The admin should have header links to every page on the site; whereas customers should only see home, menu, cart
+//need a way to deny orders placed during closed hours (or disallow them entirely); can we disconnect the 'place order' functionality during certain hours?
+//pay in store?  What if someone just wants to place the order online but pay in person?  Is there enough demand for that to justify it?
+//attach user name and phone to stripe metadata, then utilize that information to inform business who ordered what so they can match food to customer
+//prevent order from placing unless user has input name and phone; 
+
+//Done:
+//cart has a simple counter next to the link showing current number of items in cart
+//success page complete; cancel redirects backto menu
+//cart stored in localstorage; it stays put for both success and cancel.
+//local storage is now cleared when the success page is accessed, be it by redirect (normal) or if user just navigates to /success manually (though I don't know why they would)
+//local storage errors now cleaned up; initial state data is also cleaner; no redundant useEffect for initial state
+//we have state set up to gather user name and phone;
