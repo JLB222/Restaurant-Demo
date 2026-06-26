@@ -28,6 +28,11 @@ App.post("/create-checkout-session", async (req,res) => {
             })),
             success_url: "http://localhost:3001/success?session_id={CHECKOUT_SESSION_ID}",
             cancel_url: "http://localhost:3001/cart",
+            metadata: {
+                customerName: user.userName,
+                phone: user.userPhone,
+                // orderId: generatedOrderId
+            }
         });
         res.json({url: session.url});
     } catch (err) {

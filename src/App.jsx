@@ -62,8 +62,7 @@ function App() {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   async function handleCheckout(cartItems, user) {
-    console.log(cartItems)
-    console.log(user)
+    if (!userData.userName.trim() || !userData.userPhone.trim()) return null  //throw an error to user? or trust that the 'required' placeholder text gives them enough information? 
     const res = await fetch(`${apiUrl}/create-checkout-session`, {
       method: "POST",
       headers: {
@@ -140,11 +139,19 @@ export default App
 
 
 //what to do next:
+//clear memory on success page isn't working.  why? *
+  //it IS working; some console logs confirmed it.  but somehow the cart & local storage are refilling.  Why?
+  //read up on React docs; 'render and commit' 'synchronizing with effects'
 //admin convenience:  The admin should have header links to every page on the site; whereas customers should only see home, menu, cart
 //need a way to deny orders placed during closed hours (or disallow them entirely); can we disconnect the 'place order' functionality during certain hours?
-//pay in store?  What if someone just wants to place the order online but pay in person?  Is there enough demand for that to justify it?
-//attach user name and phone to stripe metadata, then utilize that information to inform business who ordered what so they can match food to customer
-//prevent order from placing unless user has input name and phone; 
+//[Stretch Goal][Potentially Unwanted]pay in store?  What if someone just wants to place the order online but pay in person?  Is there enough demand for that to justify it?
+//send email to business that they've received an order?
+//input sanitization:  proper US phone number from customer?
+//does the useEffect on success.jsx even need to be there?
+//delete checkout.jsx?  Since we use stripe, we arguably don't need it.  I say 'arguably' because we might be able to do an embedded Stripe deployment with it.  
+//create admin: current orders
+//create admit: edit menu/database
+//added a trim method to the handlecheckout user info to get rid of empty space at the front and back
 
 //Done:
 //cart has a simple counter next to the link showing current number of items in cart
@@ -153,3 +160,6 @@ export default App
 //local storage is now cleared when the success page is accessed, be it by redirect (normal) or if user just navigates to /success manually (though I don't know why they would)
 //local storage errors now cleaned up; initial state data is also cleaner; no redundant useEffect for initial state
 //we have state set up to gather user name and phone;
+//attach user name and phone to stripe metadata, then utilize that information to inform business who ordered what so they can match food to customer
+//prevent order from placing unless user has input name and phone;
+//added a trim method to the handlecheckout user info to get rid of empty space at the front and back

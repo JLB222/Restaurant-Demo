@@ -20,8 +20,8 @@ function Cart(props) {
             {cartContents.length? <button onClick={() => setReadyToCheckout(true)}>Proceed to Checkout</button> : null}
             {readyToCheckout ? 
                     <div className="form">
-                        Name:<input type="text" name="userName" id="name" required onChange={(e) => getUserInformation(e.target.name, e.target.value)}/>
-                        Phone:<input type="tel" name="userPhone" id="phone" required onChange={(e) => getUserInformation(e.target.name, e.target.value)}/>
+                        Name:<input type="text" name="userName" id="name" required placeholder="Required" onChange={(e) => getUserInformation(e.target.name, e.target.value)}/>
+                        Phone:<input type="tel" name="userPhone" id="phone" required placeholder="Required" onChange={(e) => getUserInformation(e.target.name, e.target.value)}/>
                         <input type="submit" value="Place Order!" onClick={() => handleCheckout()}/>
                     </div>
             : null}
