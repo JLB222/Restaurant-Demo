@@ -2,10 +2,7 @@ import { Form, Link } from "react-router-dom"
 import { useState } from "react"
 
 function Cart(props) {
-    const [readyToCheckout, setReadyToCheckout] = useState(false)
-    const {cartContents, addToCart, removeFromCart, handleCheckout, getUserInformation, userInformation} = props
-
-   
+    const {cartContents, addToCart, removeFromCart} = props
 
     return (
         <div>
@@ -16,15 +13,6 @@ function Cart(props) {
                     <button onClick={() => removeFromCart(el)}>-</button>
                 </li>
             ))}
-            {/* {cartContents.length? <button onClick={() => handleCheckout()}>Place Order</button> : null} */}
-            {cartContents.length? <button onClick={() => setReadyToCheckout(true)}>Proceed to Checkout</button> : null}
-            {readyToCheckout ? 
-                    <div className="form">
-                        Name:<input type="text" name="userName" id="name" required placeholder="Required" onChange={(e) => getUserInformation(e.target.name, e.target.value)}/>
-                        Phone:<input type="tel" name="userPhone" id="phone" required placeholder="Required" onChange={(e) => getUserInformation(e.target.name, e.target.value)}/>
-                        <input type="submit" value="Place Order!" onClick={() => handleCheckout()}/>
-                    </div>
-            : null}
         </div>
     )
 }
