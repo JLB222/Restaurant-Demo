@@ -5,14 +5,8 @@ function Menu(props) {  //menuItems is an array of objects from menu.json; later
     return (
         <ul>
             {menuItems.map((item) => (
-                <li 
-                    key={item.id}
-                >
-                    <Item 
-                        itemData={item} 
-                    />
-                    <button onClick={() => props.addToCart(item)}>Add To Cart</button>
-                    {/* only here to test functionality; final position of the 'add to cart' button will decide where this goes; it may end up in the item.jsx */}
+                <li key={item.id}>
+                    <Item itemData={item} />
                 </li>
             ))}
         </ul>

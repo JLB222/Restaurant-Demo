@@ -33,7 +33,10 @@ export default App
 //what to do next:
 //dress up home page
 //dress up menu page
+//create siteConfig.js to customize Home with business information
+//create menu.js to reflect business's products
 
 //Done:
 //removed stripe integration
 //remove cart altogether
+//removed add to cart buttons
