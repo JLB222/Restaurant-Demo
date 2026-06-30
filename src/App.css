@@ -2,13 +2,14 @@ body {
   background-color: aliceblue;
 }
 
-nav {
+nav ul {
   display: flex;
 }
 
 ul {
   display: flex;
 }
+
 li {
   list-style-type: none;
   margin: auto;
